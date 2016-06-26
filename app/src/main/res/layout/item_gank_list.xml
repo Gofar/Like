@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="gankItem"
+            type="com.lcf.like.viewmodel.GankItemViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="center_vertical"
+        android:onClick="@{gankItem.onItemClick}"
+        android:orientation="horizontal"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0">
+
+            <TextView
+                android:id="@+id/tv_who"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{gankItem.who}"
+                android:textSize="25sp"
+                tools:text="Jack" />
+
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/tv_who"
+                android:layout_toRightOf="@+id/tv_who"
+                android:text="@{gankItem.time}"
+                android:textSize="15sp"
+                tools:text="2016.06.25 14:12" />
+
+            <TextView
+                android:id="@+id/tv_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_who"
+                android:maxLines="2"
+                android:text="@{gankItem.desc}"
+                android:textSize="20sp"
+                tools:text="身无彩凤双飞翼，心有灵犀一点通" />
+
+            <TextView
+                android:id="@+id/tv_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_desc"
+                android:text="@{gankItem.type}"
+                android:textSize="15sp"
+                tools:text="android" />
+        </RelativeLayout>
+
+        <com.facebook.drawee.view.DraweeView
+            android:id="@+id/dv_icon"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@{gankItem.url}"
+            android:visibility="@{gankItem.visibility}"
+            tools:src="@mipmap/ic_launcher" />
+    </LinearLayout>
+</layout>
