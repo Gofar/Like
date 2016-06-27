@@ -60,6 +60,10 @@ public class GankItemViewModel extends BaseObservable implements ViewModel {
         }
     }
 
+    /**
+     * Allows recycling ItemRepoViewModels within the recyclerview adapter
+     * @param gankItem GankItem
+     */
     public void setGankItem(GankItem gankItem) {
         this.gankItem = gankItem;
         notifyChange();
@@ -67,6 +71,6 @@ public class GankItemViewModel extends BaseObservable implements ViewModel {
 
     @Override
     public void destroy() {
-
+        //In this case destroy doesn't need to do anything because there is not async calls
     }
 }
