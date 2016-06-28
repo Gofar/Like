@@ -17,5 +17,5 @@ public interface ResponseCallback<T> {
      * error
      * @param e Throwable
      */
-    void onErrorRespon(Throwable e);
+    void onErrorResponse(Throwable e);
 }

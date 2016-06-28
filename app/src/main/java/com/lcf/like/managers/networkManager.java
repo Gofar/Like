@@ -3,6 +3,8 @@ package com.lcf.like.managers;
 import com.lcf.like.api.GankApi;
 
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * @Description: Network Manager
@@ -23,6 +25,8 @@ public class NetworkManager {
     private static void buildGankApi(){
         Retrofit retrofit=new Retrofit.Builder()
                 .baseUrl(GankApi.BASE_URL)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
         gankApi=retrofit.create(GankApi.class);
     }

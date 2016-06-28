@@ -1,6 +1,7 @@
 package com.lcf.like.viewmodel;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.lcf.like.managers.NetworkManager;
 import com.lcf.like.managers.ResponseCallback;
@@ -44,16 +45,23 @@ public class GankViewModel extends MyBaseObservable implements ViewModel {
                 .subscribe(new Subscriber<BaseGankEntity<GankItem>>() {
                     @Override
                     public void onCompleted() {
-                        callback.onResponse(gankItemList);
+                        Log.d("lcf","completed");
+                        if (callback != null) {
+                            callback.onResponse(gankItemList);
+                        }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        callback.onErrorRespon(e);
+                        Log.d("lcf","error:"+e.toString());
+                        if (callback != null) {
+                            callback.onErrorResponse(e);
+                        }
                     }
 
                     @Override
                     public void onNext(BaseGankEntity<GankItem> gankItemBaseGankEntity) {
+                        Log.d("lcf","onNext");
                         gankItemList = gankItemBaseGankEntity.getResults();
                     }
                 });
@@ -62,5 +70,8 @@ public class GankViewModel extends MyBaseObservable implements ViewModel {
     @Override
     public void destroy() {
         unsubscribe();
+        subscription = null;
+        context = null;
+        callback = null;
     }
 }

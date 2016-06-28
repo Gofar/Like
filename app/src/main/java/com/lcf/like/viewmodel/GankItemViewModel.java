@@ -50,7 +50,7 @@ public class GankItemViewModel extends BaseObservable implements ViewModel {
     public int getVisibility(){
         return isImageUrl()? View.VISIBLE:View.INVISIBLE;
     }
-    public void onItemClick(){
+    public void onItemClick(View view){
         if (isImageUrl()){
             // start activity for big image
             context.startActivity(new Intent());
