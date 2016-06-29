@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -14,33 +15,56 @@
         android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginBottom="@dimen/card_normal_horizontal_margin"
+        android:layout_marginLeft="@dimen/card_normal_vertical_margin"
+        android:layout_marginRight="@dimen/card_normal_vertical_margin"
+        android:layout_marginTop="@dimen/card_normal_horizontal_margin"
         card_view:cardCornerRadius="2dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="@{gankItem::onItemClick}">
+            android:onClick="@{gankItem::onItemClick}"
+            android:padding="@dimen/card_normal_vertical_margin">
 
-            <TextView
-                android:id="@+id/tv_who"
-                android:layout_width="wrap_content"
+
+            <LinearLayout
+                android:id="@+id/lay_avatar"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{gankItem.who}"
-                android:textSize="25sp"
-                tools:text="Jack" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/iv_avatar"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    fresco:roundAsCircle="true"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_who"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/card_normal_horizontal_margin"
+                    android:layout_marginStart="@dimen/card_normal_horizontal_margin"
+                    android:text="@{gankItem.who}"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp"
+                    tools:text="Jack" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tv_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_who"
+                android:layout_below="@+id/lay_avatar"
+                android:layout_marginTop="@dimen/card_normal_horizontal_margin"
+                android:ellipsize="end"
+                android:lineSpacingExtra="@dimen/card_normal_horizontal_margin"
                 android:maxLines="2"
                 android:text="@{gankItem.desc}"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 tools:text="身无彩凤双飞翼，心有灵犀一点通" />
 
             <TextView
@@ -48,9 +72,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_desc"
+                android:layout_marginTop="@dimen/card_normal_horizontal_margin"
                 android:text="@{gankItem.type}"
-                android:textSize="15sp"
-                tools:text="android" />
+                android:textSize="12sp"
+                android:background="@drawable/type_bg"
+                android:paddingLeft="@dimen/card_normal_vertical_margin"
+                android:paddingTop="@dimen/card_normal_horizontal_margin"
+                android:paddingBottom="@dimen/card_normal_horizontal_margin"
+                android:paddingRight="@dimen/card_normal_vertical_margin"
+                tools:text="android"
+                android:textColor="@color/colorPrimary"/>
 
             <TextView
                 android:id="@+id/tv_time"
@@ -60,7 +91,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:text="@{gankItem.time}"
-                android:textSize="15sp"
+                android:textSize="12sp"
                 tools:text="2016.06.25 14:12" />
 
         </RelativeLayout>

@@ -16,6 +16,6 @@ import rx.Observable;
 public interface GankApi {
     String BASE_URL = "http://gank.io/api/";
 
-    @GET("data/{type}/{page}/{limit}")
-    Observable<BaseGankEntity<GankItem>> getGankList(@Path("type") String type, @Path("page") int page, @Path("limit") int limit);
+    @GET("data/{type}/{limit}/{page}")
+    Observable<BaseGankEntity<GankItem>> getGankList(@Path("type") String type, @Path("limit") int limit, @Path("page") int page);
 }

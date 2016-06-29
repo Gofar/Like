@@ -1,7 +1,6 @@
 package com.lcf.like.viewmodel;
 
 import android.content.Context;
-import android.content.Intent;
 import android.databinding.BaseObservable;
 import android.view.View;
 
@@ -53,10 +52,10 @@ public class GankItemViewModel extends BaseObservable implements ViewModel {
     public void onItemClick(View view){
         if (isImageUrl()){
             // start activity for big image
-            context.startActivity(new Intent());
+            //context.startActivity(new Intent());
         }else {
             // start activity for details
-            context.startActivity(new Intent());
+            //context.startActivity(new Intent());
         }
     }
 

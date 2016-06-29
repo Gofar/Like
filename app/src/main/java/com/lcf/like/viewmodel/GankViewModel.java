@@ -39,13 +39,13 @@ public class GankViewModel extends MyBaseObservable implements ViewModel {
 
     public void loadGankData(int page, int limit) {
         unsubscribe();
-        subscription = NetworkManager.getGankApi().getGankList(type, page, limit)
+        subscription = NetworkManager.getGankApi().getGankList(type, limit, page)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Subscriber<BaseGankEntity<GankItem>>() {
                     @Override
                     public void onCompleted() {
-                        Log.d("lcf","completed");
+                        Log.d("Hello","completed");
                         if (callback != null) {
                             callback.onResponse(gankItemList);
                         }
@@ -53,7 +53,7 @@ public class GankViewModel extends MyBaseObservable implements ViewModel {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.d("lcf","error:"+e.toString());
+                        Log.d("Hello","error:"+e.toString());
                         if (callback != null) {
                             callback.onErrorResponse(e);
                         }
@@ -61,7 +61,7 @@ public class GankViewModel extends MyBaseObservable implements ViewModel {
 
                     @Override
                     public void onNext(BaseGankEntity<GankItem> gankItemBaseGankEntity) {
-                        Log.d("lcf","onNext");
+                        Log.d("Hello","onNext");
                         gankItemList = gankItemBaseGankEntity.getResults();
                     }
                 });

@@ -1,14 +1,18 @@
-package com.lcf.like.adapters;
+package com.lcf.like.adapter;
 
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import com.facebook.common.util.UriUtil;
+import com.lcf.like.BR;
+import com.lcf.like.R;
 import com.lcf.like.databinding.ItemGankListBinding;
 import com.lcf.like.model.GankItem;
 import com.lcf.like.viewmodel.GankItemViewModel;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,9 +23,12 @@ import java.util.List;
  */
 public class GankItemAdapter extends RecyclerView.Adapter<GankItemAdapter.GankItemViewHolder> {
     private List<GankItem> gankItems;
+    private int[] resIds = {R.mipmap.avatar_dengfeng, R.mipmap.avatar_jialan
+            , R.mipmap.avatar_jiaxuan, R.mipmap.avatar_liangyou, R.mipmap.avatar_liangyuan
+            , R.mipmap.avatar_qiuning, R.mipmap.avatar_lingjiao};
 
     public GankItemAdapter() {
-        gankItems = Collections.emptyList();
+        gankItems = new ArrayList<>();
     }
 
     @Override
@@ -34,6 +41,8 @@ public class GankItemAdapter extends RecyclerView.Adapter<GankItemAdapter.GankIt
 
     @Override
     public void onBindViewHolder(GankItemViewHolder holder, int position) {
+        int index=position%resIds.length;
+        holder.setAvatar(resIds[index]);
         holder.bindGankItem(gankItems.get(position));
     }
 
@@ -52,10 +61,11 @@ public class GankItemAdapter extends RecyclerView.Adapter<GankItemAdapter.GankIt
         notifyDataSetChanged();
     }
 
-    public void setGankItems(List<GankItem> gankItems) {
+    public void setGankItems(List<GankItem> items) {
         gankItems.clear();
-        this.gankItems.addAll(gankItems);
+        gankItems.addAll(items);
         notifyDataSetChanged();
+
     }
 
     static class GankItemViewHolder extends RecyclerView.ViewHolder {
@@ -67,7 +77,16 @@ public class GankItemAdapter extends RecyclerView.Adapter<GankItemAdapter.GankIt
         }
 
         void bindGankItem(GankItem gankItem) {
-            binding.setGankItem(new GankItemViewModel(itemView.getContext(), gankItem));
+            binding.setVariable(BR.gankItem, new GankItemViewModel(itemView.getContext(), gankItem));
+            binding.executePendingBindings();
+        }
+
+        void setAvatar(int resId) {
+            Uri uri = new Uri.Builder()
+                    .scheme(UriUtil.LOCAL_RESOURCE_SCHEME)
+                    .path(String.valueOf(resId))
+                    .build();
+            binding.ivAvatar.setImageURI(uri);
         }
     }
 }

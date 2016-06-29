@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         replaceFragment(GankFragment.newFragment("all"));
+        navigationView.setCheckedItem(R.id.nav_camera);
+        toolbar.setTitle("all");
     }
 
     @Override
@@ -84,7 +86,7 @@ public class MainActivity extends AppCompatActivity
             replaceFragment(GankFragment.newFragment("Android"));
         } else if (id == R.id.nav_slideshow) {
             toolbar.setTitle("IOS");
-            replaceFragment(GankFragment.newFragment("IOS"));
+            replaceFragment(GankFragment.newFragment("iOS"));
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
