@@ -86,8 +86,10 @@ public class GankFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     @Override
     public void onErrorResponse(Throwable e) {
-        if (page == 0) {
+        if (page == 0) { // Refresh error
             binding.refresher.setRefreshing(false);
+        }else {
+            page--;// Load more error
         }
         isLoading = false;
     }

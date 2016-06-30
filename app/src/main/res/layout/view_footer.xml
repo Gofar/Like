@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="footerView"
+            type="com.lcf.like.viewmodel.FooterViewModel" />
+    </data>
+
+    <FrameLayout
+        android:id="@+id/lay_footer"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:visibility="@{footerView.isShowLoading()}">
+
+        <LinearLayout
+            android:id="@+id/lay_loading"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="@{footerView.isLoading()}">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="加载中" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lay_loading_failed"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="@{footerView.isLoadingFailed()}">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="加载失败，点击重试" />
+        </LinearLayout>
+    </FrameLayout>
+</layout>
