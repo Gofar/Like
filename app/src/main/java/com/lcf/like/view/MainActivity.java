@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity
 
         replaceFragment(GankFragment.newFragment("all"));
         navigationView.setCheckedItem(R.id.nav_camera);
-        toolbar.setTitle("All");
     }
 
     @Override

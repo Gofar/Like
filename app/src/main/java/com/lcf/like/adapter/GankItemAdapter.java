@@ -87,7 +87,11 @@ public class GankItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         int type = holder.getItemViewType();
         switch (type) {
             case FOOTER_VIEW:
-                addLoadMore();
+                FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
+                footerViewHolder.bindFooterModel(isLoadFailed, isLoadMore);
+                if (isLoadMore) {
+                    addLoadMore();
+                }
                 break;
             case EMPTY_VIEW:
                 break;
@@ -103,10 +107,10 @@ public class GankItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     @Override
     public int getItemCount() {
         int count;
-        if (gankItems.isEmpty()){
-            count=1;
-        }else {
-            count=gankItems.size()+1;
+        if (gankItems.isEmpty()) {
+            count = 1;
+        } else {
+            count = gankItems.size() + 1;
         }
         return count;
     }
@@ -119,7 +123,7 @@ public class GankItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             } else {
                 return FOOTER_VIEW;
             }
-        } else if (position == getItemCount()-1) {
+        } else if (position == getItemCount() - 1) {
             return FOOTER_VIEW;
         }
         return super.getItemViewType(position);
@@ -142,25 +146,63 @@ public class GankItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     }
 
+    public boolean isLoading() {
+        return isLoading;
+    }
+
+    public void setLoading(boolean loading) {
+        isLoading = loading;
+    }
+
+    public boolean isLoadMore() {
+        return isLoadMore;
+    }
+
+    public void setLoadMore(boolean loadMore) {
+        isLoadMore = loadMore;
+    }
+
+    public boolean isLoadFailed() {
+        return isLoadFailed;
+    }
+
+    public void setLoadFailed(boolean loadFailed) {
+        isLoadFailed = loadFailed;
+    }
+
+    public boolean isEmptyEnable() {
+        return isEmptyEnable;
+    }
+
     public void setEmptyEnable(boolean emptyEnable) {
         isEmptyEnable = emptyEnable;
+    }
+
+    public View getEmptyView() {
+        return emptyView;
     }
 
     public void setEmptyView(View emptyView) {
         this.emptyView = emptyView;
     }
 
+    public LoadingMoreListener getLoadingMoreListener() {
+        return loadingMoreListener;
+    }
 
+    public void setLoadingMoreListener(LoadingMoreListener loadingMoreListener) {
+        this.loadingMoreListener = loadingMoreListener;
+    }
 
-    private void addLoadMore(){
-        if (!isLoading){
-            isLoading=true;
-            if (loadingMoreListener!=null){
+    private void addLoadMore() {
+        if (!isLoading) {
+            isLoading = true;
+            if (loadingMoreListener != null) {
                 loadingMoreListener.onLoadingMore();
             }
         }
-
     }
+
     static class GankItemViewHolder extends BaseViewHolder {
         private ItemGankListBinding binding;
 
@@ -189,12 +231,19 @@ public class GankItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             binding.pbLoading.getIndeterminateDrawable().setColorFilter(Color.parseColor("#3F51B5"), PorterDuff.Mode.SRC_IN);
         }
 
-        void bindFooterModel(boolean flag){
-            binding.setVariable(BR.footerView,new FooterViewModel(itemView.getContext(),false,false));
+        void bindFooterModel(boolean flag1, boolean flag2) {
+            binding.setVariable(BR.footerView, new FooterViewModel(itemView.getContext(), flag1, flag2));
+            binding.executePendingBindings();
         }
     }
 
-    public interface LoadingMoreListener{
+    /**
+     * Loading more listener
+     */
+    public interface LoadingMoreListener {
+        /**
+         * Loading more
+         */
         void onLoadingMore();
     }
 }
