@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity
 
         replaceFragment(GankFragment.newFragment("all"));
         navigationView.setCheckedItem(R.id.nav_camera);
-        toolbar.setTitle("all");
+        toolbar.setTitle("All");
     }
 
     @Override
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_camera) {
             // Handle the camera action
-            toolbar.setTitle("all");
+            toolbar.setTitle("All");
             replaceFragment(GankFragment.newFragment("all"));
         } else if (id == R.id.nav_gallery) {
             toolbar.setTitle("Android");
