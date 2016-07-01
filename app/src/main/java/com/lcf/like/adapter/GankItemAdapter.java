@@ -1,15 +1,20 @@
 package com.lcf.like.adapter;
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.facebook.common.util.UriUtil;
 import com.lcf.like.BR;
 import com.lcf.like.R;
 import com.lcf.like.databinding.ItemGankListBinding;
+import com.lcf.like.databinding.ViewFooterBinding;
 import com.lcf.like.model.GankItem;
+import com.lcf.like.viewmodel.FooterViewModel;
 import com.lcf.like.viewmodel.GankItemViewModel;
 
 import java.util.ArrayList;
@@ -21,34 +26,103 @@ import java.util.List;
  * @since: 1.0
  * @Date: 2016/6/28 16:35
  */
-public class GankItemAdapter extends RecyclerView.Adapter<GankItemAdapter.GankItemViewHolder> {
+public class GankItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private List<GankItem> gankItems;
     private int[] resIds = {R.mipmap.avatar_dengfeng, R.mipmap.avatar_jialan
             , R.mipmap.avatar_jiaxuan, R.mipmap.avatar_liangyou, R.mipmap.avatar_liangyuan
             , R.mipmap.avatar_qiuning, R.mipmap.avatar_lingjiao};
+    private static final int FOOTER_VIEW = 0x1001;
+    private static final int EMPTY_VIEW = 0x1002;
+
+    /**
+     * Whether is loading now
+     */
+    private boolean isLoading;
+    /**
+     * Whether can load more
+     */
+    private boolean isLoadMore;
+    /**
+     * Whether is load failed
+     */
+    private boolean isLoadFailed;
+    /**
+     * Whether can show empty view
+     */
+    private boolean isEmptyEnable;
+    /**
+     * When there is no data,show this view
+     */
+    private View emptyView;
+
+    private LoadingMoreListener loadingMoreListener;
 
     public GankItemAdapter() {
         gankItems = new ArrayList<>();
     }
 
     @Override
-    public GankItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//        ItemGankListBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext())
-//                , R.layout.item_gank_list, parent, false);
-        ItemGankListBinding binding = ItemGankListBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-        return new GankItemViewHolder(binding);
+    public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        BaseViewHolder holder;
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        switch (viewType) {
+            case EMPTY_VIEW:
+                holder = new BaseViewHolder(emptyView);
+                break;
+            case FOOTER_VIEW:
+                ViewFooterBinding footerBinding = ViewFooterBinding.inflate(inflater, parent, false);
+                holder = new FooterViewHolder(footerBinding);
+                break;
+            default:
+                ItemGankListBinding binding = ItemGankListBinding.inflate(inflater, parent, false);
+                holder = new GankItemViewHolder(binding);
+                break;
+        }
+
+        return holder;
     }
 
     @Override
-    public void onBindViewHolder(GankItemViewHolder holder, int position) {
-        int index=position%resIds.length;
-        holder.setAvatar(resIds[index]);
-        holder.bindGankItem(gankItems.get(position));
+    public void onBindViewHolder(BaseViewHolder holder, int position) {
+        int type = holder.getItemViewType();
+        switch (type) {
+            case FOOTER_VIEW:
+                addLoadMore();
+                break;
+            case EMPTY_VIEW:
+                break;
+            default:
+                int index = position % resIds.length;
+                GankItemViewHolder gankItemViewHolder = (GankItemViewHolder) holder;
+                gankItemViewHolder.bindGankItem(gankItems.get(position), resIds[index]);
+                break;
+        }
+
     }
 
     @Override
     public int getItemCount() {
-        return gankItems.size();
+        int count;
+        if (gankItems.isEmpty()){
+            count=1;
+        }else {
+            count=gankItems.size()+1;
+        }
+        return count;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (gankItems.size() == 0) {
+            if (isEmptyEnable) {
+                return EMPTY_VIEW;
+            } else {
+                return FOOTER_VIEW;
+            }
+        } else if (position == getItemCount()-1) {
+            return FOOTER_VIEW;
+        }
+        return super.getItemViewType(position);
     }
 
     public void addGankItem(GankItem item) {
@@ -68,7 +142,26 @@ public class GankItemAdapter extends RecyclerView.Adapter<GankItemAdapter.GankIt
 
     }
 
-    static class GankItemViewHolder extends RecyclerView.ViewHolder {
+    public void setEmptyEnable(boolean emptyEnable) {
+        isEmptyEnable = emptyEnable;
+    }
+
+    public void setEmptyView(View emptyView) {
+        this.emptyView = emptyView;
+    }
+
+
+
+    private void addLoadMore(){
+        if (!isLoading){
+            isLoading=true;
+            if (loadingMoreListener!=null){
+                loadingMoreListener.onLoadingMore();
+            }
+        }
+
+    }
+    static class GankItemViewHolder extends BaseViewHolder {
         private ItemGankListBinding binding;
 
         public GankItemViewHolder(ItemGankListBinding binding) {
@@ -76,17 +169,32 @@ public class GankItemAdapter extends RecyclerView.Adapter<GankItemAdapter.GankIt
             this.binding = binding;
         }
 
-        void bindGankItem(GankItem gankItem) {
-            binding.setVariable(BR.gankItem, new GankItemViewModel(itemView.getContext(), gankItem));
-            binding.executePendingBindings();
-        }
-
-        void setAvatar(int resId) {
+        void bindGankItem(GankItem gankItem, int resId) {
             Uri uri = new Uri.Builder()
                     .scheme(UriUtil.LOCAL_RESOURCE_SCHEME)
                     .path(String.valueOf(resId))
                     .build();
             binding.ivAvatar.setImageURI(uri);
+            binding.setVariable(BR.gankItem, new GankItemViewModel(itemView.getContext(), gankItem));
+            binding.executePendingBindings();
         }
+    }
+
+    static class FooterViewHolder extends BaseViewHolder {
+        private ViewFooterBinding binding;
+
+        public FooterViewHolder(ViewFooterBinding binding) {
+            super(binding.layFooter);
+            this.binding = binding;
+            binding.pbLoading.getIndeterminateDrawable().setColorFilter(Color.parseColor("#3F51B5"), PorterDuff.Mode.SRC_IN);
+        }
+
+        void bindFooterModel(boolean flag){
+            binding.setVariable(BR.footerView,new FooterViewModel(itemView.getContext(),false,false));
+        }
+    }
+
+    public interface LoadingMoreListener{
+        void onLoadingMore();
     }
 }

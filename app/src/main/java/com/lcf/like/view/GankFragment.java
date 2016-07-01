@@ -117,7 +117,7 @@ public class GankFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 int totalItemCount = manager.getItemCount();
                 //lastVisibleItem >= totalItemCount - 4 表示剩下4个item自动加载，各位自由选择
                 // dy>0 表示向下滑动
-                if (lastVisibleItem >= totalItemCount - 4 && dy > 0) {
+                if (lastVisibleItem >= totalItemCount - 1 && dy > 0) {
                     if (isLoading) {
                         Log.d("Hello", "ignore manually update!");
                     } else {

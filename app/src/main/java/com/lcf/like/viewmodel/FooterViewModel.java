@@ -1,5 +1,6 @@
 package com.lcf.like.viewmodel;
 
+import android.content.Context;
 import android.databinding.BaseObservable;
 import android.view.View;
 
@@ -10,17 +11,26 @@ import android.view.View;
  * @since 1.0
  */
 public class FooterViewModel extends BaseObservable implements ViewModel {
+    private Context context;
+    private boolean isLoading;
+    private boolean isFailed;
 
-    public int isShowLoading(boolean flag) {
-        return flag ? View.VISIBLE : View.GONE;
+    public FooterViewModel(Context context,boolean isLoading,boolean isFailed){
+        this.context=context;
+        this.isLoading=isLoading;
+        this.isFailed=isFailed;
     }
 
-    public int isLoading(boolean flag) {
-        return flag ? View.VISIBLE : View.GONE;
+    public boolean isFailed() {
+        return isFailed;
     }
 
-    public int isLoadingFailed(boolean flag) {
-        return flag ? View.VISIBLE : View.GONE;
+    public boolean isLoading() {
+        return isLoading;
+    }
+
+    public void onFooterClick(View view){
+
     }
 
     @Override
