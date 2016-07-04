@@ -41,7 +41,7 @@ public class GankItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     /**
      * Whether can load more
      */
-    private boolean isLoadMore;
+    private boolean isLoadMore = true;
     /**
      * Whether is load failed
      */
@@ -67,11 +67,15 @@ public class GankItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         switch (viewType) {
             case EMPTY_VIEW:
+                if (emptyView==null){
+                    emptyView=inflater.inflate(R.layout.view_empty,null);
+                }
                 holder = new BaseViewHolder(emptyView);
                 break;
             case FOOTER_VIEW:
                 ViewFooterBinding footerBinding = ViewFooterBinding.inflate(inflater, parent, false);
                 holder = new FooterViewHolder(footerBinding);
+                //footerBinding.layFooter.setTag(loadingMoreListener);
                 break;
             default:
                 ItemGankListBinding binding = ItemGankListBinding.inflate(inflater, parent, false);
@@ -88,10 +92,8 @@ public class GankItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         switch (type) {
             case FOOTER_VIEW:
                 FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
-                footerViewHolder.bindFooterModel(isLoadFailed, isLoadMore);
-                if (isLoadMore) {
-                    addLoadMore();
-                }
+                footerViewHolder.bindFooterModel(isLoadMore, isLoadFailed);
+                addLoadMore();
                 break;
             case EMPTY_VIEW:
                 break;
@@ -194,6 +196,9 @@ public class GankItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         this.loadingMoreListener = loadingMoreListener;
     }
 
+    /**
+     * Loading more
+     */
     private void addLoadMore() {
         if (!isLoading) {
             isLoading = true;

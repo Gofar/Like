@@ -6,8 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,8 +30,7 @@ public class GankFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private GankViewModel gankViewModel;
     private FragmentBaseBinding binding;
     private String type;
-    private int page;
-    private boolean isLoading;
+    private int page=1;
 
     public static GankFragment newFragment(String type) {
         Bundle bundle = new Bundle();
@@ -42,6 +39,7 @@ public class GankFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         fragment.setArguments(bundle);
         return fragment;
     }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,29 +67,40 @@ public class GankFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     @Override
     public void onRefresh() {
-        loadData(page = 0);
+        loadData(page = 1);
     }
 
     @Override
     public void onResponse(List<GankItem> gankItems) {
         GankItemAdapter adapter = (GankItemAdapter) binding.rvList.getAdapter();
-        if (page == 0) { // refresh
+        if (page == 1) { // refresh
             binding.refresher.setRefreshing(false);
             adapter.setGankItems(gankItems);
         } else { // load more
             adapter.addGankItems(gankItems);
         }
-        isLoading = false;
+        // Notify refresh footer view
+        adapter.setLoading(false);
+        adapter.setLoadMore(true);
+        adapter.setLoadFailed(false);
+        adapter.notifyItemChanged(adapter.getItemCount() - 1);
     }
 
     @Override
     public void onErrorResponse(Throwable e) {
-        if (page == 0) { // Refresh error
+        GankItemAdapter adapter = (GankItemAdapter) binding.rvList.getAdapter();
+        if (page == 1) { // Refresh or first load has error
             binding.refresher.setRefreshing(false);
-        }else {
+            adapter.setEmptyEnable(true);
+            adapter.notifyDataSetChanged();
+        } else {
             page--;// Load more error
+            // Notify refresh footer view
+            adapter.setLoading(false);
+            adapter.setLoadFailed(true);
+            adapter.setLoadMore(false);
+            adapter.notifyItemChanged(adapter.getItemCount() - 1);
         }
-        isLoading = false;
     }
 
     /**
@@ -99,33 +108,16 @@ public class GankFragment extends Fragment implements SwipeRefreshLayout.OnRefre
      */
     public void setRecyclerView() {
         GankItemAdapter adapter = new GankItemAdapter();
+        adapter.setLoadingMoreListener(new GankItemAdapter.LoadingMoreListener() {
+            @Override
+            public void onLoadingMore() {
+                loadData(++page);
+            }
+        });
         binding.rvList.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.rvList.setAdapter(adapter);
         binding.refresher.setColorSchemeResources(R.color.colorPrimary);
         binding.refresher.setOnRefreshListener(this);
-        binding.rvList.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                int lastVisibleItem = manager.findLastVisibleItemPosition();
-                int totalItemCount = manager.getItemCount();
-                //lastVisibleItem >= totalItemCount - 4 表示剩下4个item自动加载，各位自由选择
-                // dy>0 表示向下滑动
-                if (lastVisibleItem >= totalItemCount - 1 && dy > 0) {
-                    if (isLoading) {
-                        Log.d("Hello", "ignore manually update!");
-                    } else {
-                        loadData(++page);
-                    }
-                }
-            }
-        });
     }
 
     /**
@@ -134,15 +126,11 @@ public class GankFragment extends Fragment implements SwipeRefreshLayout.OnRefre
      * @param page page number
      */
     private void loadData(int page) {
-        if (isLoading) {
-            return;
-        }
-        if (page == 0) {
+        if (page == 1) {
             if (!binding.refresher.isRefreshing()) {
                 binding.refresher.setRefreshing(true);
             }
         }
         gankViewModel.loadGankData(page);
-        isLoading = true;
     }
 }

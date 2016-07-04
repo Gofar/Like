@@ -3,6 +3,7 @@ package com.lcf.like;
 import android.app.Application;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.stetho.Stetho;
 
 /**
  * @author LiChaofeng
@@ -16,5 +17,20 @@ public class App extends Application{
         super.onCreate();
         // Init Fresco
         Fresco.initialize(this);
+        // Init Stetho
+        Stetho.initializeWithDefaults(this);
+//        Stetho.initialize(
+//                Stetho.newInitializerBuilder(this)
+//                        .enableDumpapp(
+//                                Stetho.defaultDumperPluginsProvider(this))
+//                        .enableWebKitInspector(
+//                                Stetho.defaultInspectorModulesProvider(this))
+//                        .build());
+//
+//        new OkHttpClient.Builder()
+//                .addNetworkInterceptor(new StethoInterceptor())
+//                .build();
+
     }
+
 }

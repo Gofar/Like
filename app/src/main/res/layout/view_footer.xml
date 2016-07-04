@@ -3,6 +3,10 @@
 
     <data>
 
+        <import type="android.view.View" />
+        <variable
+            name="listener"
+            type="com.lcf.like.adapter.GankItemAdapter.LoadingMoreListener"/>
         <variable
             name="footerView"
             type="com.lcf.like.viewmodel.FooterViewModel" />
@@ -13,6 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:gravity="center"
+        android:onClick="@{(view)-> footerView.onFooterClick(listener)}"
         android:orientation="horizontal">
 
         <ProgressBar
@@ -20,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="4dp"
-            android:visibility="@{footerView.loadingFailed ? View.GONE : View.VISIBLE}"/>
+            android:visibility="@{footerView.loadingShow ? View.GONE : View.VISIBLE}" />
 
         <TextView
             android:layout_width="wrap_content"

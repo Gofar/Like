@@ -1,7 +1,11 @@
 package com.lcf.like.managers;
 
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.lcf.like.api.GankApi;
 
+import okhttp3.OkHttpClient;
+import retrofit2.CallAdapter;
+import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -14,20 +18,28 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class NetworkManager {
     private static GankApi gankApi;
+    private static OkHttpClient okHttpClient = new OkHttpClient.Builder()
+            .addNetworkInterceptor(new StethoInterceptor())
+            .retryOnConnectionFailure(false)
+            .build();
+    private static Converter.Factory gsonConverterFactory = GsonConverterFactory.create();
+    private static CallAdapter.Factory rxJavaCallAdapterFactory = RxJavaCallAdapterFactory.create();
 
-    public static synchronized GankApi getGankApi(){
-        if (gankApi==null){
+    public static synchronized GankApi getGankApi() {
+        if (gankApi == null) {
             buildGankApi();
         }
         return gankApi;
     }
 
-    private static void buildGankApi(){
-        Retrofit retrofit=new Retrofit.Builder()
+    private static void buildGankApi() {
+        okHttpClient.retryOnConnectionFailure();
+        Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(GankApi.BASE_URL)
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
+                .client(okHttpClient)
+                .addCallAdapterFactory(rxJavaCallAdapterFactory)
+                .addConverterFactory(gsonConverterFactory)
                 .build();
-        gankApi=retrofit.create(GankApi.class);
+        gankApi = retrofit.create(GankApi.class);
     }
 }

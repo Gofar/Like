@@ -2,11 +2,12 @@ package com.lcf.like.viewmodel;
 
 import android.content.Context;
 import android.databinding.BaseObservable;
-import android.view.View;
+
+import com.lcf.like.adapter.GankItemAdapter;
 
 /**
  * @author LiChaofeng
- * @description
+ * @description Footer ViewModel
  * @date 2016/6/30 19:20
  * @since 1.0
  */
@@ -22,8 +23,13 @@ public class FooterViewModel extends BaseObservable implements ViewModel {
         this.isLoadingFailed = isLoadingFailed;
     }
 
-    public boolean isLoadingFailed() {
-        return isLoadingFailed;
+    /**
+     * Whether show loading ProgressBar:loading failed or has no more data
+     *
+     * @return Whether the progressbar show
+     */
+    public boolean isLoadingShow() {
+        return isLoadingFailed || !isLoadingMore;
     }
 
     public String getText() {
@@ -37,9 +43,10 @@ public class FooterViewModel extends BaseObservable implements ViewModel {
         return text;
     }
 
-    public void onFooterClick(View view) {
-        if (isLoadingFailed) {
+    public void onFooterClick(GankItemAdapter.LoadingMoreListener loadingMoreListener) {
+        if (isLoadingFailed && loadingMoreListener != null) {
             // When load failed,retry load
+            loadingMoreListener.onLoadingMore();
         }
     }
 
