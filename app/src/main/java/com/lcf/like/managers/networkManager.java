@@ -20,7 +20,6 @@ public class NetworkManager {
     private static GankApi gankApi;
     private static OkHttpClient okHttpClient = new OkHttpClient.Builder()
             .addNetworkInterceptor(new StethoInterceptor())
-            .retryOnConnectionFailure(false)
             .build();
     private static Converter.Factory gsonConverterFactory = GsonConverterFactory.create();
     private static CallAdapter.Factory rxJavaCallAdapterFactory = RxJavaCallAdapterFactory.create();
