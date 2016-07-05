@@ -9,4 +9,5 @@
 
     <dimen name="card_normal_vertical_margin">8dp</dimen>
     <dimen name="card_normal_horizontal_margin">2dp</dimen>
+    <dimen name="margin_12">4dp</dimen>
 </resources>
