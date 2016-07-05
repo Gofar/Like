@@ -2,6 +2,7 @@ package com.lcf.like.viewmodel;
 
 import android.content.Context;
 import android.databinding.BaseObservable;
+import android.view.View;
 
 import com.lcf.like.adapter.GankItemAdapter;
 
@@ -43,10 +44,16 @@ public class FooterViewModel extends BaseObservable implements ViewModel {
         return text;
     }
 
-    public void onFooterClick(GankItemAdapter.LoadingMoreListener loadingMoreListener) {
-        if (isLoadingFailed && loadingMoreListener != null) {
+    public void onItemClick(View view) {
+        if (isLoadingFailed ) {
             // When load failed,retry load
-            loadingMoreListener.onLoadingMore();
+            GankItemAdapter.LoadingMoreListener listener= (GankItemAdapter.LoadingMoreListener) view.getTag();
+            if (listener!=null){
+                listener.onLoadingMore();
+                isLoadingFailed=false;
+                isLoadingMore=true;
+                notifyChange();
+            }
         }
     }
 

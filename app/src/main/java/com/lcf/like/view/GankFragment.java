@@ -30,7 +30,7 @@ public class GankFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private GankViewModel gankViewModel;
     private FragmentBaseBinding binding;
     private String type;
-    private int page=1;
+    private int page = 0;
 
     public static GankFragment newFragment(String type) {
         Bundle bundle = new Bundle();
@@ -55,7 +55,7 @@ public class GankFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_base, container, false);
         setRecyclerView();
         gankViewModel = new GankViewModel(getContext(), type, this);
-        loadData(page);
+        //loadData(page);
         return binding.getRoot();
     }
 
@@ -126,11 +126,11 @@ public class GankFragment extends Fragment implements SwipeRefreshLayout.OnRefre
      * @param page page number
      */
     private void loadData(int page) {
-        if (page == 1) {
-            if (!binding.refresher.isRefreshing()) {
-                binding.refresher.setRefreshing(true);
-            }
-        }
+//        if (page == 1) {
+//            if (!binding.refresher.isRefreshing()) {
+//                binding.refresher.setRefreshing(true);
+//            }
+//        }
         gankViewModel.loadGankData(page);
     }
 }

@@ -53,7 +53,7 @@ public class GankViewModel extends MyBaseObservable implements ViewModel {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.d("Hello","error:"+e.toString());
+                        Log.d("Hello","onError:"+e.toString());
                         if (callback != null) {
                             callback.onErrorResponse(e);
                         }

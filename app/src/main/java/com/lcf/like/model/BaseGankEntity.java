@@ -29,8 +29,8 @@ public class BaseGankEntity<T> {
     }
 
     public List<T> getResults() {
-        if (results==null){
-            results=new ArrayList<>();
+        if (results == null) {
+            results = new ArrayList<>();
         }
         return results;
     }

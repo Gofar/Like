@@ -67,15 +67,15 @@ public class GankItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         switch (viewType) {
             case EMPTY_VIEW:
-                if (emptyView==null){
-                    emptyView=inflater.inflate(R.layout.view_empty,null);
+                if (emptyView == null) {
+                    emptyView = inflater.inflate(R.layout.view_empty,parent,false);
                 }
                 holder = new BaseViewHolder(emptyView);
                 break;
             case FOOTER_VIEW:
                 ViewFooterBinding footerBinding = ViewFooterBinding.inflate(inflater, parent, false);
                 holder = new FooterViewHolder(footerBinding);
-                //footerBinding.layFooter.setTag(loadingMoreListener);
+                footerBinding.layFooter.setTag(loadingMoreListener);
                 break;
             default:
                 ItemGankListBinding binding = ItemGankListBinding.inflate(inflater, parent, false);
@@ -200,7 +200,7 @@ public class GankItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
      * Loading more
      */
     private void addLoadMore() {
-        if (!isLoading) {
+        if (!isLoading && isLoadMore) {
             isLoading = true;
             if (loadingMoreListener != null) {
                 loadingMoreListener.onLoadingMore();
