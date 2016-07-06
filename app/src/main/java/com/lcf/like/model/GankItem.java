@@ -12,31 +12,31 @@ import com.google.gson.annotations.SerializedName;
 public class GankItem extends BaseModel<RealmGankItem> {
     @SerializedName("_id")
     @Expose
-    private String _id;
+    public String _id;
     @SerializedName("createdAt")
     @Expose
-    private String createdAt;
+    public String createdAt;
     @SerializedName("desc")
     @Expose
-    private String desc;
+    public String desc;
     @SerializedName("publishedAt")
     @Expose
-    private String publishedAt;
+    public String publishedAt;
     @SerializedName("source")
     @Expose
-    private String source;
+    public String source;
     @SerializedName("type")
     @Expose
-    private String type;
+    public String type;
     @SerializedName("url")
     @Expose
-    private String url;
+    public String url;
     @SerializedName("used")
     @Expose
-    private boolean used;
+    public boolean used;
     @SerializedName("who")
     @Expose
-    private String who;
+    public String who;
 
     public String get_id() {
         return _id;
