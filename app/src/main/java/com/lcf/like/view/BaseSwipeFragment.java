@@ -18,7 +18,7 @@ import com.lcf.like.R;
  * @since: V1.0
  * @Date: 2016/6/27 14:21
  */
-public abstract class BaseFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
+public abstract class BaseSwipeFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
     protected SwipeRefreshLayout mSwipeRefreshLay;
     protected RecyclerView mRecyclerView;
 
