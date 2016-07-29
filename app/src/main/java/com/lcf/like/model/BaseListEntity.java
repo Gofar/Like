@@ -12,7 +12,7 @@ import java.util.List;
  * @since: 1.0
  * @Date: 2016/6/27 16:23
  */
-public class BaseGankEntity<T> {
+public class BaseListEntity<T> {
     @SerializedName("error")
     @Expose
     private boolean error;

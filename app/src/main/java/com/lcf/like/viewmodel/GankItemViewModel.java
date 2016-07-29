@@ -5,7 +5,7 @@ import android.databinding.BaseObservable;
 import android.view.View;
 
 import com.lcf.like.model.GankItem;
-import com.lcf.like.utils.UrlUtils;
+import com.lcf.like.utils.UrlUtil;
 
 /**
  * @author lcf
@@ -27,7 +27,7 @@ public class GankItemViewModel extends BaseObservable implements ViewModel {
     }
 
     public String getTime() {
-        return gankItem.getPublishedAt();
+        return gankItem.getPublishedAt().replaceAll("[a-zA-Z]"," ");
     }
 
     public String getDesc() {
@@ -43,7 +43,7 @@ public class GankItemViewModel extends BaseObservable implements ViewModel {
     }
 
     public boolean isImageUrl(){
-        return UrlUtils.isImageUrl(getUrl());
+        return UrlUtil.isImageUrl(getUrl());
     }
 
     public int getVisibility(){

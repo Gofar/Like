@@ -8,7 +8,7 @@ import android.text.TextUtils;
  * @description url utils
  * @time 2016/6/25 14:24
  */
-public class UrlUtils {
+public class UrlUtil {
     /**
      * whether the url is a image url
      * @param url url

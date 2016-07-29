@@ -68,7 +68,7 @@ public class GankItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         switch (viewType) {
             case EMPTY_VIEW:
                 if (emptyView == null) {
-                    emptyView = inflater.inflate(R.layout.view_empty,parent,false);
+                    emptyView = inflater.inflate(R.layout.view_empty, parent, false);
                 }
                 holder = new BaseViewHolder(emptyView);
                 break;
@@ -137,13 +137,17 @@ public class GankItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     }
 
     public void addGankItems(List<GankItem> items) {
-        gankItems.addAll(items);
+        if (items != null && !items.isEmpty()) {
+            gankItems.addAll(items);
+        }
         notifyDataSetChanged();
     }
 
     public void setGankItems(List<GankItem> items) {
         gankItems.clear();
-        gankItems.addAll(items);
+        if (items != null && !items.isEmpty()) {
+            gankItems.addAll(items);
+        }
         notifyDataSetChanged();
 
     }
@@ -233,7 +237,7 @@ public class GankItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         public FooterViewHolder(ViewFooterBinding binding) {
             super(binding.layFooter);
             this.binding = binding;
-            binding.pbLoading.getIndeterminateDrawable().setColorFilter(Color.parseColor("#3F51B5"), PorterDuff.Mode.SRC_IN);
+            binding.pbLoading.getIndeterminateDrawable().setColorFilter(Color.parseColor("#2196F3"), PorterDuff.Mode.SRC_IN);
         }
 
         void bindFooterModel(boolean flag1, boolean flag2) {
