@@ -10,4 +10,6 @@
     <dimen name="card_normal_vertical_margin">8dp</dimen>
     <dimen name="card_normal_horizontal_margin">2dp</dimen>
     <dimen name="margin_12">4dp</dimen>
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>

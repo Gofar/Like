@@ -1,11 +1,13 @@
 package com.lcf.like.viewmodel;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.BaseObservable;
 import android.view.View;
 
 import com.lcf.like.model.GankItem;
 import com.lcf.like.utils.UrlUtil;
+import com.lcf.like.view.UserDetailsActivity;
 
 /**
  * @author lcf
@@ -27,7 +29,7 @@ public class GankItemViewModel extends BaseObservable implements ViewModel {
     }
 
     public String getTime() {
-        return gankItem.getPublishedAt().replaceAll("[a-zA-Z]"," ");
+        return gankItem.getPublishedAt().replaceAll("[a-zA-Z]", " ");
     }
 
     public String getDesc() {
@@ -42,25 +44,44 @@ public class GankItemViewModel extends BaseObservable implements ViewModel {
         return gankItem.getUrl();
     }
 
-    public boolean isImageUrl(){
+    public boolean isImageUrl() {
         return UrlUtil.isImageUrl(getUrl());
     }
 
-    public int getVisibility(){
-        return isImageUrl()? View.VISIBLE:View.INVISIBLE;
+    public int getVisibility() {
+        return isImageUrl() ? View.VISIBLE : View.INVISIBLE;
     }
-    public void onItemClick(View view){
-        if (isImageUrl()){
+
+    public void onItemClick(View view) {
+        if (isImageUrl()) {
             // start activity for big image
             //context.startActivity(new Intent());
-        }else {
+        } else {
             // start activity for details
             //context.startActivity(new Intent());
         }
     }
 
+    public void onUserClick(View view) {
+        String login = "";
+        String tag="github.com/";
+        int start = gankItem.url.indexOf(tag);
+        if (start >= 0) {
+            int last = gankItem.url.indexOf("/", start+tag.length());
+            if (last > 0) {
+                login = gankItem.url.substring(start+tag.length(), last);
+            } else {
+                login = gankItem.url.substring(start + tag.length());
+            }
+        }
+        Intent intent = new Intent(context, UserDetailsActivity.class);
+        intent.putExtra("login", login);
+        context.startActivity(intent);
+    }
+
     /**
      * Allows recycling ItemRepoViewModels within the recyclerview adapter
+     *
      * @param gankItem GankItem
      */
     public void setGankItem(GankItem gankItem) {
