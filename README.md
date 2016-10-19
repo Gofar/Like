@@ -1,2 +1,2 @@
 # Like
-The project is currently only for learning by mine
+The project is currently only for learning by myself
