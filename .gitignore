@@ -2,9 +2,4 @@
 .idea
 /local.properties
 /build
-/captures
 *.iml
-/.idea
-/.idea/gradle.xml
-/.idea/modules.xml
-/.idea/misc.xml
